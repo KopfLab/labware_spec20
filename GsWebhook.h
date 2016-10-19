@@ -35,54 +35,51 @@ public:
 
   // methods
   bool init ();
-  bool send (const char* type, const char* variable) ;
-  bool send (const char* type, const char* variable, const char* value) ;
-  bool send (const char* type, const char* variable, const String &value) ;
-  bool send (const char* type, const char* variable, int value) ;
-  bool send (const char* type, const char* variable, double value) ;
-  bool send (const char* type, const char* variable, const char* value, const char* msg) ;
-  bool send (const char* type, const char* variable, const String &value, const char* msg) ;
-  bool send (const char* type, const char* variable, int value, const char* msg) ;
-  bool send (const char* type, const char* variable, double value, const char* msg) ;
-  bool send (const char* type, const char* variable, const char* value, const char* unit, const char* msg) ;
-  bool send (const char* type, const char* variable, const String &value, const char* unit, const char* msg) ;
-  bool send (const char* type, const char* variable, int value, const char* unit, const char* msg) ;
-  bool send (const char* type, const char* variable, double value, const char* unit, const char* msg) ;
+
+  // send character value
+  bool send (const char* type, const char* variable, const char* value,
+    const char* unit = "", const char* sample = "", const char* msg = "") ;
+
+  // send String value
+  bool send (const char* type, const char* variable, const String &value,
+    const char* unit = "", const char* sample = "", const char* msg = "") ;
+
+  // send integer value
+  bool send (const char* type, const char* variable, int value,
+    const char* unit = "", const char* sample = "", const char* msg = "") ;
+
+  // send double value
+  bool send (const char* type, const char* variable, double value,
+    const char* unit = "", const char* sample = "", const char* msg = "") ;
 };
 
 bool GsWebhook::init() {
-  return(send("event", "startup", "", "", "complete"));
+  return(send("event", "startup", "", "", "", "complete"));
 }
 
-bool GsWebhook::send(const char* type, const char* variable, const char* value, const char* unit, const char* msg) {
+bool GsWebhook::send(const char* type, const char* variable, const char* value,
+  const char* unit, const char* sample, const char* msg) {
   Time.format(Time.now(), "%Y-%m-%d %H:%M:%S").toCharArray(date_time_buffer, sizeof(date_time_buffer));
   snprintf(json_buffer, sizeof(json_buffer),
-    "{\"datetime\":\"%s\",\"type\":\"%s\",\"var\":\"%s\",\"value\":\"%s\", \"units\":\"%s\",\"msg\":\"%s\"}",
-    date_time_buffer, type, variable, value, unit, msg);
+    "{\"datetime\":\"%s\",\"type\":\"%s\",\"var\":\"%s\",\"value\":\"%s\", \"units\":\"%s\", \"sample\":\"%s\",\"msg\":\"%s\"}",
+    date_time_buffer, type, variable, value, unit, sample, msg);
   return(Particle.publish(webhook, json_buffer));
 }
 
-bool GsWebhook::send(const char* type, const char* variable, const String &value, const char* unit, const char* msg) {
+bool GsWebhook::send(const char* type, const char* variable, const String &value,
+  const char* unit, const char* sample, const char* msg) {
   value.toCharArray(value_buffer, sizeof(value_buffer));
-  return(send(type, variable, value_buffer, unit, msg));
+  return(send(type, variable, value_buffer, unit, msg, sample));
 }
 
-bool GsWebhook::send(const char* type, const char* variable, int value, const char* unit, const char* msg) {
+bool GsWebhook::send(const char* type, const char* variable, int value,
+  const char* unit, const char* sample, const char* msg) {
   sprintf(value_buffer, "%d", value);
-  return(send(type, variable, value_buffer, unit, msg));
+  return(send(type, variable, value_buffer, unit, msg, sample));
 }
 
-bool GsWebhook::send(const char* type, const char* variable, double value, const char* unit, const char* msg) {
+bool GsWebhook::send(const char* type, const char* variable, double value,
+  const char* unit, const char* sample, const char* msg) {
   sprintf(value_buffer, "%.3f", value);
-  return(send(type, variable, value_buffer, unit, msg));
+  return(send(type, variable, value_buffer, unit, msg, sample));
 }
-
-bool GsWebhook::send(const char* type, const char* variable) { return(send(type, variable, "", "")); }
-bool GsWebhook::send(const char* type, const char* variable, const char* value) { return(send(type, variable, value, "")); }
-bool GsWebhook::send(const char* type, const char* variable, const String &value) { return(send(type, variable, value, "")); }
-bool GsWebhook::send(const char* type, const char* variable, int value) { return(send(type, variable, value, "")); }
-bool GsWebhook::send(const char* type, const char* variable, double value) { return(send(type, variable, value, "")); }
-bool GsWebhook::send(const char* type, const char* variable, const char* value, const char* unit) { return(send(type, variable, value, unit, "")); }
-bool GsWebhook::send(const char* type, const char* variable, const String &value, const char* unit) { return(send(type, variable, value, unit, "")); }
-bool GsWebhook::send(const char* type, const char* variable, int value, const char* unit) { return(send(type, variable, value, unit, "")); }
-bool GsWebhook::send(const char* type, const char* variable, double value, const char* unit) { return(send(type, variable, value, unit, "")); }
