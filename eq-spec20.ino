@@ -80,7 +80,7 @@ void turn_on () {
     relay_delay_active = false;
 
     // google spreadsheet logging
-    gs.send("event", "spec20", "", "", "turned ON");
+    gs.send("event", "spec20", "1", "binary", "", "turned ON");
 }
 
 // sechedule turn_off
@@ -108,7 +108,7 @@ void turn_off_spec () {
     relay_delay_active = false;
 
     // google spreadsheet logging
-    gs.send("event", "spec20", "", "", "turned OFF");
+    gs.send("event", "spec20", "0", "binary", "", "turned OFF");
 }
 
 // save reading
@@ -135,7 +135,9 @@ bool save_reading () {
     snprintf(units, sizeof(units), "%s@%snm", spec.mode, spec.wavelength);
 
     // save to GS
-    bool gs_write = gs.send("data", variable, spec.value, units);
+    char counter[3];
+    snprintf(counter, sizeof(counter), "%d", read_counter);
+    bool gs_write = gs.send("data", variable, spec.value, units, counter);
 
     // screen info
     if (gs_write) {
@@ -187,7 +189,7 @@ void loop(void) {
 
     // on  / off button
     button.update();
-    if (button.was_released()) {
+    if (button.was_pushed()) {
       if (spec_active) {
           schedule_turn_off();
       } else {
