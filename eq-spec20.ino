@@ -40,6 +40,7 @@ char message_buffer[21];
 void setup(void) {
     // serial for debugging
     Serial.begin(9600);
+    Serial.println("INFO: Starting up Spec20 interface");
 
     // time adjusment
     Time.zone(-6); // to get the time correctly
