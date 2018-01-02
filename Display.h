@@ -18,7 +18,6 @@
 
 #pragma once
 
-// requirement: https://github.com/BulldogLowell/LiquidCrystal_I2C_Spark
 #include "LiquidCrystal_I2C_Spark.h"
 
 //#include "HttpClient.h" // script in particle dev (requires local copies of HttpClient.h/.cpp)

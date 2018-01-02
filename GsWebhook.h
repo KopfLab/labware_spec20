@@ -8,8 +8,8 @@
 GsWebhook gs ("webhook_name"); // insert name of GS logging web hook (can only be 12 chars long!!!)
 void setup () {
     gs.init();
-    // send to google spread sheet (value can be char/String/int/double, unit and message are optional)
-    gs.send("data type", "variable name", "value", "unit", "msg");
+    // send to google spread sheet (value can be char/String/int/double, unit, sample and message are optional)
+    gs.send("data type", "variable name", "value", "unit", "sample", "msg");
 }
 
 */
