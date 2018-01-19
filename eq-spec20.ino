@@ -47,6 +47,7 @@ void setup(void) {
 
     // LCD screen
     lcd.init();
+    lcd.print_line(1, "Starting up...");
 
     // Google spreadsheets logger
     gs.init();
@@ -60,6 +61,10 @@ void setup(void) {
     digitalWrite(LED_PIN, LOW);
     pinMode(RELAY_PIN, OUTPUT);
     digitalWrite(RELAY_PIN, LOW);
+
+    // complete
+    lcd.print_line(1, "Startup complete.");
+    Serial.println("INFO: Startup complete.");
 }
 
 // turn spec on
